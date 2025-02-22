@@ -1,0 +1,1 @@
+C:\Users\risun\Course\rust-course\Rust-Professional\exercises\normal\solution2\target\debug\solution2.exe: C:\Users\risun\Course\rust-course\Rust-Professional\exercises\normal\solution2\src\converter.rs C:\Users\risun\Course\rust-course\Rust-Professional\exercises\normal\solution2\src\main.rs

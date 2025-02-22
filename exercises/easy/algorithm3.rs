@@ -5,9 +5,48 @@
 */
 
 
-fn sort<T>(array: &mut [T]){
-	//TODO
+fn sort<T>(array: &mut [T])
+where
+    T: PartialOrd + ToOwned<Owned = T>,
+{
+    if array.len() <= 1 {
+        return;
+    }
+
+    quick_sort::<T>(array, 0, (array.len() -1) as isize);
 }
+
+fn quick_sort<T>(arr: &mut [T], start: isize, end: isize)
+where
+    T: PartialOrd + ToOwned<Owned = T>,
+{
+    if start >= end || arr.len() <= 1 {
+        return;
+    }
+
+    let (pivot, mut left, mut right) = ((&arr[(start + end) as usize / 2]).to_owned(), start, end);
+
+    while left < right {
+        while arr[left as usize] < pivot {
+            left += 1;
+        }
+        
+        while arr[right as usize] > pivot {
+            right -= 1;
+        }
+
+        if left <= right {
+            arr.swap(left as usize, right as usize);
+            left+=1;
+            right-=1;
+        }
+    }
+
+    quick_sort(arr, start, right);
+    quick_sort(arr, left, end);
+}
+
+
 #[cfg(test)]
 mod tests {
     use super::*;

@@ -1,0 +1,1 @@
+C:\Users\risun\Course\rust-course\Rust-Professional\exercises\hard\solutiont2\target\debug\solutiont2.exe: C:\Users\risun\Course\rust-course\Rust-Professional\exercises\hard\solutiont2\src\main.rs C:\Users\risun\Course\rust-course\Rust-Professional\exercises\hard\solutiont2\src\prime_factor.rs

@@ -24,6 +24,8 @@ mod tests {
 
             if result == *expected {
                 total_score += 20.0;
+            } else {
+                println!("Test failed for input: {}, expected: {}, got: {}", input1, expected, result);
             }
         }
         println!("Total score: {:.2}", total_score);

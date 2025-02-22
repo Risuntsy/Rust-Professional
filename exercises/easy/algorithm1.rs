@@ -6,15 +6,20 @@
 
 use std::fmt::{self, Display, Formatter};
 use std::ptr::NonNull;
-use std::vec::*;
+use std::cmp::PartialOrd;
+
 
 #[derive(Debug)]
-struct Node<T> {
+struct Node<T> 
+where T: PartialOrd 
+{
     val: T,
     next: Option<NonNull<Node<T>>>,
 }
 
-impl<T> Node<T> {
+impl<T> Node<T> 
+where T: PartialOrd 
+{
     fn new(t: T) -> Node<T> {
         Node {
             val: t,
@@ -23,19 +28,26 @@ impl<T> Node<T> {
     }
 }
 #[derive(Debug)]
-struct LinkedList<T> {
+struct LinkedList<T> 
+where T: PartialOrd 
+{
     length: u32,
     start: Option<NonNull<Node<T>>>,
     end: Option<NonNull<Node<T>>>,
 }
 
-impl<T> Default for LinkedList<T> {
+impl<T> Default for LinkedList<T> 
+where T: PartialOrd 
+{
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl<T> LinkedList<T> {
+impl<T> LinkedList<T> 
+where 
+    T: PartialOrd
+{
     pub fn new() -> Self {
         Self {
             length: 0,
@@ -69,18 +81,65 @@ impl<T> LinkedList<T> {
             },
         }
     }
-	pub fn merge(list_a:LinkedList<T>,list_b:LinkedList<T>) -> Self
-	{
-		//TODO
-		Self {
-            length: 0,
-            start: None,
-            end: None,
+    fn take_head(&mut self) -> Option<T> {
+        self.start.map(|node| {
+            let node = unsafe { Box::from_raw(node.as_ptr()) };
+            self.start = node.next;
+            self.length -= 1;
+            if self.start.is_none() {
+                self.end = None;
+            };
+            node.val
+        })
+    }
+
+    fn merge(mut list_a: LinkedList<T>, mut list_b: LinkedList<T>) -> Self {
+        if list_a.length == 0 {
+            return list_b;
         }
-	}
+        if list_b.length == 0 {
+            return list_a;
+        }
+
+        let (mut ptr_a, mut ptr_b) = if list_a.get(0) < list_b.get(0) {
+            (list_a.start.unwrap(), list_b.start.unwrap())
+        } else {
+            (list_b.start.unwrap(), list_a.start.unwrap())
+        };
+
+        let mut merged_list: LinkedList<T> = LinkedList {
+            length: list_a.length + list_b.length,
+            start: Some(ptr_a),
+            end: None,
+        };
+
+        loop {
+            unsafe {
+                while let Some(next_a) = ptr_a.as_ref().next {
+                    if next_a.as_ref().val > ptr_b.as_ref().val {
+                        break;
+                    }
+                    ptr_a = next_a;
+                }
+
+                if ptr_a.as_ref().next.is_none() {
+                    ptr_a.as_mut().next = Some(ptr_b);
+                    merged_list.end = Some(ptr_b);
+                    break;
+                }
+
+                let temp = ptr_a.as_mut().next;
+                ptr_a.as_mut().next = Some(ptr_b);
+                ptr_a = ptr_b;
+                ptr_b = temp.unwrap();
+            }
+        }
+
+        merged_list
+    }
 }
 
-impl<T> Display for LinkedList<T>
+impl<T:PartialOrd> Display for LinkedList<T>
 where
     T: Display,
 {
@@ -92,7 +151,7 @@ where
     }
 }
 
-impl<T> Display for Node<T>
+impl<T:PartialOrd> Display for Node<T>
 where
     T: Display,
 {

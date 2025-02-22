@@ -1,0 +1,1 @@
+C:\Users\risun\Course\rust-course\Rust-Professional\exercises\normal\solution1\target\debug\solution1.exe: C:\Users\risun\Course\rust-course\Rust-Professional\exercises\normal\solution1\src\count_distinct.rs C:\Users\risun\Course\rust-course\Rust-Professional\exercises\normal\solution1\src\main.rs

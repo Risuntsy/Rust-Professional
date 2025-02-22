@@ -11,9 +11,37 @@
 
 use std::fmt::{self, Display, Formatter};
 
-pub fn intersection(nums1: Vec<i32>, nums2: Vec<i32>) -> Vec<i32> {
-    // TODO: Implement the logic to find the intersection of two arrays
-    Vec::new() // Placeholder return value
+pub fn next_index<T: PartialEq>(nums: &Vec<T>, index: &mut usize) {
+    while *index < nums.len() - 1 && nums[*index] == nums[*index + 1] {
+        *index += 1;
+    }
+    *index += 1;
+}
+
+pub fn intersection(mut nums1: Vec<i32>, mut nums2: Vec<i32>) -> Vec<i32> {
+    nums1.sort_unstable();
+    nums2.sort_unstable();
+
+    let (mut left, mut index_1, mut index_2) = (0, 0, 0);
+
+    while index_1 < nums1.len() && index_2 < nums2.len() {
+        match &nums1[index_1].cmp(&nums2[index_2]) {
+            std::cmp::Ordering::Less => {
+                next_index(&mut nums1, &mut index_1);
+            }
+            std::cmp::Ordering::Equal => {
+                nums1[left] = nums1[index_1];
+                left += 1;
+                next_index(&mut nums1, &mut index_1);
+                next_index(&mut nums2, &mut index_2);
+            }
+            std::cmp::Ordering::Greater => {
+                next_index(&mut nums2, &mut index_2);
+            }
+        }
+    }
+
+    nums1.get(0..left).expect("Invalid index").to_owned()
 }
 
 #[cfg(test)]

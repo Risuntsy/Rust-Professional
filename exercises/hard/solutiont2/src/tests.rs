@@ -32,6 +32,8 @@ mod tests {
             // 时间超3s，判定不合格
             if duration <= Duration::new(3, 0) && result == *expected {
                 total_score += 10.0;
+            } else {
+                println!("Test failed for input: {}, expected: {}, got: {}, use time: {}", input, expected, result, duration.as_millis());
             }
         }
         println!("Total score: {:.2}", total_score);

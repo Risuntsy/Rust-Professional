@@ -13,9 +13,19 @@
 
 use std::fmt::{self, Display, Formatter};
 
+
+fn count_chars(s: &str) -> [i32; 26] {
+    let mut counts = [0; 26];
+    for c in s.chars() {
+        if c.is_alphabetic() {
+            counts[(c.to_ascii_lowercase() as u8 - b'a') as usize] += 1;
+        }
+    }
+    counts
+}
+
 pub fn are_anagrams(s1: String, s2: String) -> bool {
-    // TODO: Implement the logic to check if two strings are anagrams
-    false // Placeholder return value
+    count_chars(&s1).eq(&count_chars(&s2))
 }
 
 #[cfg(test)]
