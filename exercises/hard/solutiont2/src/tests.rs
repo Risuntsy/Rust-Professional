@@ -33,7 +33,7 @@ mod tests {
             if duration <= Duration::new(3, 0) && result == *expected {
                 total_score += 10.0;
             } else {
-                println!("Test failed for input: {}, expected: {}, got: {}, use time: {}", input, expected, result, duration.as_millis());
+                println!("Test failed for input: {}, expected: {}, got: {}, use time: {} ms", input, expected, result, duration.as_millis());
             }
         }
         println!("Total score: {:.2}", total_score);

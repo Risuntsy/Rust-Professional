@@ -1,1 +1,0 @@
-C:\Users\risun\Course\rust-course\Rust-Professional\exercises\normal\solution5\target\debug\solution5.exe: C:\Users\risun\Course\rust-course\Rust-Professional\exercises\normal\solution5\src\fibnacci.rs C:\Users\risun\Course\rust-course\Rust-Professional\exercises\normal\solution5\src\main.rs

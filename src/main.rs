@@ -179,11 +179,7 @@ fn evaluate_single_file(file_path: &PathBuf) -> bool {
             };
 
             // 删除测试二进制文件
-            if let Err(e) = fs::remove_file(&test_binary) {
-                eprintln!("Failed to remove test binary {}: {}", test_binary.display(), e);
-            } else {
-                println!("Successfully removed test binary: {}", test_binary.display());
-            }
+            try_remove(&test_binary);
 
             return test_passed;
         } else {
@@ -194,6 +190,15 @@ fn evaluate_single_file(file_path: &PathBuf) -> bool {
     } else {
         eprintln!("Error executing rustc --test for {}", file_path.display());
         return false;
+    }
+}
+
+fn try_remove(test_binary: &PathBuf) {
+    let success_count = vec![    fs::remove_file(&test_binary),
+    fs::remove_file(&test_binary.with_extension("exe")),
+    fs::remove_file(&test_binary.with_extension("pdb"))].into_iter().filter(|result| result.is_ok()).count();
+    if success_count == 0 {
+        eprintln!("Failed to remove test binary for {}", test_binary.display());
     }
 }
 
