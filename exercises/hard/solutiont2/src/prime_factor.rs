@@ -1,5 +1,3 @@
-use std::time::Instant;
-
 pub fn find_max_prime_factor(number: u128) -> u128 {
     let mut n = number;
     
@@ -86,7 +84,7 @@ fn mod_pow(base: u128, exp: u128, modulus: u128) -> u128 {
     result
 }
 
-// 核心：将乘法分解为加法避免溢出 <button class="citation-flag" data-index="7">
+// 核心：将乘法分解为加法避免溢出
 fn mod_mul(mut a: u128, mut b: u128, modulus: u128) -> u128 {
     let mut result = 0;
     a %= modulus;
